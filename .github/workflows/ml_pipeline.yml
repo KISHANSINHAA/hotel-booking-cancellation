@@ -13,78 +13,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-    # --------------------------
-    # 1. Checkout Code
-    # --------------------------
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # --------------------------
-    # 2. Set Python Version
-    # --------------------------
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.9'
 
-    # --------------------------
-    # 3. Install Dependencies
-    # --------------------------
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-        # Ensure pytest exists
-        python -m pip install pytest
-
-    # --------------------------
-    # 4. Install Package in Development Mode
-    # --------------------------
-    - name: Install package in development mode
-      run: |
-        # Create a simple setup.py to make the package installable
-        echo "from setuptools import setup, find_packages
-
-setup(
-    name='hotel-booking-cancellation',
-    version='0.1',
-    packages=find_packages(),
-)" > setup.py
-        
-        # Install in development mode
-        pip install -e .
-
-    # --------------------------
-    # 5. Debug Directory Structure
-    # --------------------------
-    - name: Debug directory structure
-      run: |
-        echo "===== CURRENT WORKING DIRECTORY ====="
-        pwd
-        echo "===== DIRECTORY STRUCTURE ====="
-        ls -la
-        ls -la src/
-
-    # --------------------------
-    # 6. Run Main ML Pipeline
-    # --------------------------
     - name: Run Main ML Pipeline
       run: |
+        export PYTHONPATH="${PYTHONPATH}:$(pwd):$(pwd)/src"
         cd src
         python main.py
 
-    # --------------------------
-    # 7. Deployment Placeholder (Optional)
-    # --------------------------
     - name: Deploy to Streamlit (if on master)
       if: github.ref == 'refs/heads/master'
       run: echo "Model retrained successfully. Ready for deployment."
 
-    # --------------------------
-    # 8. Upload Artifacts (Corrected Paths)
-    # --------------------------
     - name: Archive trained models + graphs
       uses: actions/upload-artifact@v4
       with:

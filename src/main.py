@@ -6,38 +6,20 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Add src directory to Python path
-current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-
-# Ensure directories are in sys.path
-if current_dir not in sys.path:
-    sys.path.insert(0, current_dir)
-if parent_dir not in sys.path:
-    sys.path.insert(0, parent_dir)
+sys.path.append(os.path.join(os.path.dirname(__file__)))
 
 # ========== MODULE IMPORTS ==========
-try:
-    from data.data_loader import load_data, load_and_inspect_data
-    from preprocessing.eda import perform_eda, visualize_distributions
-    from preprocessing.data_cleaning import clean_data
-    from preprocessing.feature_engineering import engineer_features
-    from preprocessing.outlier_detection import handle_outliers
-    from preprocessing.encoding import handle_categorical_encoding
-    from models.class_imbalance import handle_class_imbalance
-    from models.model_training import train_and_compare_models, split_data, get_all_trained_models
-    from models.hyperparameter_tuning import quick_hyperparameter_tuning
-    from models.model_evaluation import comprehensive_model_evaluation
-    from utils.model_saving import save_complete_model_package
-except ImportError as e:
-    print(f"Import error: {e}")
-    print("Current working directory:", os.getcwd())
-    print("Current file path:", __file__)
-    print("sys.path:", sys.path)
-    print("Directory contents:")
-    print("src/:", os.listdir(current_dir) if os.path.exists(current_dir) else "Not found")
-    if os.path.exists(os.path.join(current_dir, 'models')):
-        print("src/models/:", os.listdir(os.path.join(current_dir, 'models')))
-    raise
+from data.data_loader import load_data, load_and_inspect_data
+from preprocessing.eda import perform_eda, visualize_distributions
+from preprocessing.data_cleaning import clean_data
+from preprocessing.feature_engineering import engineer_features
+from preprocessing.outlier_detection import handle_outliers
+from preprocessing.encoding import handle_categorical_encoding
+from models.class_imbalance import handle_class_imbalance
+from models.model_training import train_and_compare_models, split_data, get_all_trained_models
+from models.hyperparameter_tuning import quick_hyperparameter_tuning
+from models.model_evaluation import comprehensive_model_evaluation
+from utils.model_saving import save_complete_model_package
 # =====================================================
 
 def check_existing_models():
