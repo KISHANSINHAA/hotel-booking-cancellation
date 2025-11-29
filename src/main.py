@@ -184,20 +184,36 @@ def main():
     print("\nStep 7: Preparing data for modeling...")
     
     # Separate features and target
-    if 'booking_status_encoded' in df_encoded.columns:
-        X = df_encoded.drop(['booking_status', 'booking_status_encoded'], axis=1)
+    # Check if booking_status column exists before trying to drop it
+    if 'booking_status' in df_encoded.columns and 'booking_status_encoded' in df_encoded.columns:
+        # Both columns exist, drop the original booking_status column
+        X = df_encoded.drop(['booking_status'], axis=1)
         y = df_encoded['booking_status_encoded']
         target_encoder = encoders.get('target_encoder')
-        
-        # Get class names
-        if target_encoder:
-            class_names = target_encoder.classes_
-        else:
-            class_names = ['Not_Canceled', 'Canceled']
-    else:
-        # Fallback if encoding failed
+    elif 'booking_status_encoded' in df_encoded.columns:
+        # Only encoded column exists, use it as target
+        X = df_encoded.drop(['booking_status_encoded'], axis=1)
+        y = df_encoded['booking_status_encoded']
+        target_encoder = encoders.get('target_encoder')
+    elif 'booking_status' in df_encoded.columns:
+        # Only original column exists, encode it manually
+        from sklearn.preprocessing import LabelEncoder
+        le = LabelEncoder()
+        df_encoded['booking_status_encoded'] = le.fit_transform(df_encoded['booking_status'])
         X = df_encoded.drop(['booking_status'], axis=1)
-        y = (df_encoded['booking_status'] == 'Canceled').astype(int)
+        y = df_encoded['booking_status_encoded']
+        target_encoder = le
+        encoders['target_encoder'] = le
+    else:
+        # Neither column exists, create a fallback
+        print("Error: Neither 'booking_status' nor 'booking_status_encoded' found in the dataset")
+        print("Available columns:", df_encoded.columns.tolist())
+        return
+    
+    # Get class names
+    if target_encoder:
+        class_names = target_encoder.classes_
+    else:
         class_names = ['Not_Canceled', 'Canceled']
     
     print(f"Feature matrix shape: {X.shape}")
