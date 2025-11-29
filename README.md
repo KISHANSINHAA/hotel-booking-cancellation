@@ -44,7 +44,7 @@ hotel_booking_cancellation/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/hotel-booking-cancellation.git
+   git clone https://github.com/KISHANSINHAA/hotel-booking-cancellation.git
    cd hotel-booking-cancellation
    ```
 
@@ -75,13 +75,13 @@ The models achieve the following performance metrics on the test set:
 
 | Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
 |-------|----------|-----------|--------|----------|---------|
-| Random Forest (Best) | ~91.4% | ~91.5% | ~91.4% | ~91.4% | ~97.0% |
-| Gradient Boosting | ~86.8% | ~86.9% | ~86.8% | ~86.8% | ~94.1% |
+| Gradient Boosting (Best) | ~88.0% | ~88.1% | ~88.0% | ~88.0% | ~95.1% |
+| Random Forest | ~87.7% | ~87.9% | ~87.7% | ~87.7% | ~94.6% |
 | Logistic Regression | ~75.7% | ~75.7% | ~75.7% | ~75.7% | ~83.1% |
 
 ## Usage
 
-1. Select a model from the dropdown menu in the sidebar
+1. Select a model from the radio buttons in the sidebar
 2. Adjust booking parameters using the input controls
 3. Click "Predict Cancellation" to see the results
 4. View performance visualizations and feature importance
