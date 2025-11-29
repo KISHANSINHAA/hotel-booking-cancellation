@@ -34,16 +34,12 @@ jobs:
         ls -la
         echo "===== SRC DIRECTORY ====="
         ls -la src/
-        echo "===== CHECKING IF MODELS DIRECTORY EXISTS ====="
+        echo "===== CHECKING MODELS DIRECTORY ====="
         if [ -d "src/models" ]; then
           echo "Models directory exists:"
           ls -la src/models/
         else
           echo "ERROR: Models directory does NOT exist!"
-          echo "Creating models directory..."
-          mkdir -p src/models
-          echo "Created empty __init__.py"
-          touch src/models/__init__.py
         fi
 
     - name: Run Main ML Pipeline
