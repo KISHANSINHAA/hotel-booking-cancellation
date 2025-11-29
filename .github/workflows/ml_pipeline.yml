@@ -43,7 +43,9 @@ jobs:
     # 4. Set Correct PYTHONPATH
     # --------------------------
     - name: Add project root to PYTHONPATH
-      run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
+      run: |
+        echo "PYTHONPATH=/home/runner/work/hotel-booking-cancellation/hotel-booking-cancellation" >> $GITHUB_ENV
+        echo "PYTHONPATH=/home/runner/work/hotel-booking-cancellation/hotel-booking-cancellation/src" >> $GITHUB_ENV
 
     # --------------------------
     # 5. Debug Directory Structure
@@ -54,19 +56,24 @@ jobs:
         ls -R .
         echo "===== SRC STRUCTURE ====="
         ls -R src || true
+        echo "===== PYTHONPATH ====="
+        echo $PYTHONPATH
 
     # --------------------------
     # 6. Run Tests
     # --------------------------
     - name: Run tests
       run: |
-        pytest src/tests/ -v || echo "No tests found or tests failed"
+        cd src
+        python -m pytest tests/ -v || echo "No tests found or tests failed"
 
     # --------------------------
     # 7. Run Main ML Pipeline
     # --------------------------
     - name: Retrain model
-      run: python src/main.py
+      run: |
+        cd src
+        python main.py
 
     # --------------------------
     # 8. Deployment Placeholder (Optional)
