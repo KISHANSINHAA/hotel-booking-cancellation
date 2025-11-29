@@ -6,23 +6,91 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # ========== MODULE IMPORTS ==========
-# Add the src directory to Python path
-src_dir = os.path.dirname(os.path.abspath(__file__))
-if src_dir not in sys.path:
-    sys.path.insert(0, src_dir)
+# Completely explicit import handling
+current_file = os.path.abspath(__file__)
+src_directory = os.path.dirname(current_file)
 
-# Use absolute imports
-from data.data_loader import load_data, load_and_inspect_data
-from preprocessing.eda import perform_eda, visualize_distributions
-from preprocessing.data_cleaning import clean_data
-from preprocessing.feature_engineering import engineer_features
-from preprocessing.outlier_detection import handle_outliers
-from preprocessing.encoding import handle_categorical_encoding
-from models.class_imbalance import handle_class_imbalance
-from models.model_training import train_and_compare_models, split_data, get_all_trained_models
-from models.hyperparameter_tuning import quick_hyperparameter_tuning
-from models.model_evaluation import comprehensive_model_evaluation
-from utils.model_saving import save_complete_model_package
+# Ensure src directory is in path
+if src_directory not in sys.path:
+    sys.path.insert(0, src_directory)
+
+# Manual import verification
+print("=== DEBUG INFO ===")
+print(f"Current file: {current_file}")
+print(f"Src directory: {src_directory}")
+print(f"Sys path: {sys.path}")
+print(f"Directory contents: {os.listdir(src_directory)}")
+if os.path.exists(os.path.join(src_directory, 'models')):
+    print(f"Models directory contents: {os.listdir(os.path.join(src_directory, 'models'))}")
+
+# Try importing with full error handling
+try:
+    # Direct path imports
+    import data.data_loader
+    from data.data_loader import load_data, load_and_inspect_data
+    
+    import preprocessing.eda
+    from preprocessing.eda import perform_eda, visualize_distributions
+    
+    import preprocessing.data_cleaning
+    from preprocessing.data_cleaning import clean_data
+    
+    import preprocessing.feature_engineering
+    from preprocessing.feature_engineering import engineer_features
+    
+    import preprocessing.outlier_detection
+    from preprocessing.outlier_detection import handle_outliers
+    
+    import preprocessing.encoding
+    from preprocessing.encoding import handle_categorical_encoding
+    
+    import models.class_imbalance
+    from models.class_imbalance import handle_class_imbalance
+    
+    import models.model_training
+    from models.model_training import train_and_compare_models, split_data, get_all_trained_models
+    
+    import models.hyperparameter_tuning
+    from models.hyperparameter_tuning import quick_hyperparameter_tuning
+    
+    import models.model_evaluation
+    from models.model_evaluation import comprehensive_model_evaluation
+    
+    import utils.model_saving
+    from utils.model_saving import save_complete_model_package
+    
+    print("✓ All imports successful")
+    
+except ImportError as e:
+    print(f"✗ Import error: {e}")
+    print("Attempting alternative import method...")
+    
+    # Alternative import method - modify sys.path more aggressively
+    project_root = os.path.dirname(src_directory)
+    if project_root not in sys.path:
+        sys.path.insert(0, project_root)
+    
+    # Try relative imports
+    try:
+        sys.path.append('.')
+        sys.path.append('./src')
+        
+        from data.data_loader import load_data, load_and_inspect_data
+        from preprocessing.eda import perform_eda, visualize_distributions
+        from preprocessing.data_cleaning import clean_data
+        from preprocessing.feature_engineering import engineer_features
+        from preprocessing.outlier_detection import handle_outliers
+        from preprocessing.encoding import handle_categorical_encoding
+        from models.class_imbalance import handle_class_imbalance
+        from models.model_training import train_and_compare_models, split_data, get_all_trained_models
+        from models.hyperparameter_tuning import quick_hyperparameter_tuning
+        from models.model_evaluation import comprehensive_model_evaluation
+        from utils.model_saving import save_complete_model_package
+        
+        print("✓ Alternative imports successful")
+    except Exception as e2:
+        print(f"✗ Alternative imports also failed: {e2}")
+        raise
 # =====================================================
 
 def check_existing_models():
