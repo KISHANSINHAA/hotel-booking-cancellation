@@ -28,7 +28,7 @@ jobs:
 
     - name: Run Main ML Pipeline
       run: |
-        export PYTHONPATH="${PYTHONPATH}:$(pwd):$(pwd)/src"
+        export PYTHONPATH="/home/runner/work/hotel-booking-cancellation/hotel-booking-cancellation:/home/runner/work/hotel-booking-cancellation/hotel-booking-cancellation/src"
         cd src
         python main.py
 
