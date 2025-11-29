@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ master ]
   schedule:
-    - cron: '0 2 * * *'   # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'   # run daily at 2 AM UTC
 
 jobs:
   test-and-retrain:
@@ -14,50 +14,70 @@ jobs:
 
     steps:
 
-    # 1. Checkout code
+    # --------------------------
+    # 1. Checkout Code
+    # --------------------------
     - name: Checkout code
       uses: actions/checkout@v4
 
-    # 2. Set up Python
+    # --------------------------
+    # 2. Set Python Version
+    # --------------------------
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.9'
 
-    # 3. Install dependencies
+    # --------------------------
+    # 3. Install Dependencies
+    # --------------------------
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # 4. Set PYTHONPATH to repo root 
-    #    (so imports like "from src.models..." work correctly)
+        # Ensure pytest exists
+        python -m pip install pytest
+
+    # --------------------------
+    # 4. Set Correct PYTHONPATH
+    # --------------------------
     - name: Add project root to PYTHONPATH
       run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
 
-    # 5. Debug (optional — helps verify structure)
+    # --------------------------
+    # 5. Debug Directory Structure
+    # --------------------------
     - name: Debug directory structure
       run: |
-        echo "Root structure:"
+        echo "===== ROOT STRUCTURE ====="
         ls -R .
+        echo "===== SRC STRUCTURE ====="
+        ls -R src || true
 
-    # 6. Run tests (inside src/tests/)
+    # --------------------------
+    # 6. Run Tests
+    # --------------------------
     - name: Run tests
       run: |
         pytest src/tests/ -v || echo "No tests found or tests failed"
 
-    # 7. Run main pipeline
+    # --------------------------
+    # 7. Run Main ML Pipeline
+    # --------------------------
     - name: Retrain model
-      run: |
-        python src/main.py
+      run: python src/main.py
 
-    # 8. Deploy placeholder
-    - name: Deploy to Streamlit (if on master branch)
+    # --------------------------
+    # 8. Deployment Placeholder (Optional)
+    # --------------------------
+    - name: Deploy to Streamlit (if on master)
       if: github.ref == 'refs/heads/master'
-      run: |
-        echo "Model retrained successfully. Ready for deployment."
+      run: echo "Model retrained successfully. Ready for deployment."
 
-    # 9. Upload artifacts from NEW LOCATION: src/models/
+    # --------------------------
+    # 9. Upload Artifacts (Corrected Paths)
+    # --------------------------
     - name: Archive trained models + graphs
       uses: actions/upload-artifact@v4
       with:
