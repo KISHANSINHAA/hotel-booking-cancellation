@@ -1,0 +1,46 @@
+{
+    "model_type": "Gradient Boosting",
+    "model_parameters": {
+        "learning_rate": 0.1,
+        "max_depth": 3,
+        "n_estimators": 25,
+        "subsample": 0.8
+    },
+    "cv_score": 0.8252014119343231,
+    "test_metrics": {
+        "accuracy": 0.8222085512150108,
+        "precision": 0.8223279673148155,
+        "recall": 0.8222085512150108,
+        "f1_score": 0.8221918584958509,
+        "roc_auc": 0.9104727948215183
+    },
+    "features_used": [
+        "no_of_adults",
+        "no_of_children",
+        "no_of_weekend_nights",
+        "no_of_week_nights",
+        "required_car_parking_space",
+        "lead_time",
+        "arrival_year",
+        "arrival_month",
+        "arrival_date",
+        "repeated_guest",
+        "no_of_previous_cancellations",
+        "no_of_previous_bookings_not_canceled",
+        "avg_price_per_room",
+        "no_of_special_requests",
+        "total_stay_nights",
+        "total_guests",
+        "no_of_babies",
+        "adr_per_person",
+        "is_weekend_booking",
+        "is_peak_season",
+        "previous_cancellation_rate",
+        "special_requests_per_guest",
+        "Booking_ID_encoded"
+    ],
+    "n_features": 23,
+    "n_training_samples": 39011,
+    "n_test_samples": 9753,
+    "saved_at": "2025-11-29 23:43:30"
+}
