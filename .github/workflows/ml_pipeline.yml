@@ -14,42 +14,54 @@ jobs:
 
     steps:
 
+    # 1. Checkout code
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # 2. Set up Python
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.9'
 
+    # 3. Install dependencies
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # ✅ Add src to PYTHONPATH BEFORE running anything
-    - name: Add src to PYTHONPATH
+    # 4. Set PYTHONPATH to repo root 
+    #    (so imports like "from src.models..." work correctly)
+    - name: Add project root to PYTHONPATH
       run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
 
+    # 5. Debug (optional — helps verify structure)
+    - name: Debug directory structure
+      run: |
+        echo "Root structure:"
+        ls -R .
+
+    # 6. Run tests (inside src/tests/)
     - name: Run tests
       run: |
         pytest src/tests/ -v || echo "No tests found or tests failed"
 
+    # 7. Run main pipeline
     - name: Retrain model
       run: |
         python src/main.py
 
-    # Optional deployment message
+    # 8. Deploy placeholder
     - name: Deploy to Streamlit (if on master branch)
       if: github.ref == 'refs/heads/master'
       run: |
         echo "Model retrained successfully. Ready for deployment."
 
-    # Upload trained model + graphs (inside src/)
-    - name: Archive model artifacts
+    # 9. Upload artifacts from NEW LOCATION: src/models/
+    - name: Archive trained models + graphs
       uses: actions/upload-artifact@v4
       with:
         name: trained-models
         path: |
-          models/
+          src/models/
           graphs/
