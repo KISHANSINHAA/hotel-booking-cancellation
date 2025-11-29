@@ -26,9 +26,27 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Debug directory structure
+      run: |
+        echo "===== CURRENT WORKING DIRECTORY ====="
+        pwd
+        echo "===== DIRECTORY STRUCTURE ====="
+        ls -la
+        echo "===== SRC DIRECTORY ====="
+        ls -la src/
+        echo "===== MODELS DIRECTORY ====="
+        ls -la src/models/ || echo "No models directory found"
+
     - name: Run Main ML Pipeline
       run: |
+        echo "===== PYTHONPATH DEBUG ====="
+        echo "PYTHONPATH: $PYTHONPATH"
         export PYTHONPATH="/home/runner/work/hotel-booking-cancellation/hotel-booking-cancellation:/home/runner/work/hotel-booking-cancellation/hotel-booking-cancellation/src"
+        echo "Updated PYTHONPATH: $PYTHONPATH"
+        echo "===== TESTING IMPORTS ====="
+        python -c "import sys; print('Python path:'); [print(p) for p in sys.path]"
+        python -c "import os; print('Current directory:', os.getcwd())"
+        python -c "import models; print('Successfully imported models')" || echo "Failed to import models"
         cd src
         python main.py
 
