@@ -40,21 +40,35 @@ jobs:
         python -m pip install pytest
 
     # --------------------------
-    # 4. Debug Import Issues
+    # 4. Install Package in Development Mode
     # --------------------------
-    - name: Debug Import Issues
+    - name: Install package in development mode
+      run: |
+        # Create a simple setup.py to make the package installable
+        echo "from setuptools import setup, find_packages
+
+setup(
+    name='hotel-booking-cancellation',
+    version='0.1',
+    packages=find_packages(),
+)" > setup.py
+        
+        # Install in development mode
+        pip install -e .
+
+    # --------------------------
+    # 5. Debug Directory Structure
+    # --------------------------
+    - name: Debug directory structure
       run: |
         echo "===== CURRENT WORKING DIRECTORY ====="
         pwd
         echo "===== DIRECTORY STRUCTURE ====="
         ls -la
         ls -la src/
-        echo "===== TESTING IMPORTS ====="
-        cd src
-        python test_imports.py
 
     # --------------------------
-    # 5. Run Main ML Pipeline
+    # 6. Run Main ML Pipeline
     # --------------------------
     - name: Run Main ML Pipeline
       run: |
@@ -62,14 +76,14 @@ jobs:
         python main.py
 
     # --------------------------
-    # 6. Deployment Placeholder (Optional)
+    # 7. Deployment Placeholder (Optional)
     # --------------------------
     - name: Deploy to Streamlit (if on master)
       if: github.ref == 'refs/heads/master'
       run: echo "Model retrained successfully. Ready for deployment."
 
     # --------------------------
-    # 7. Upload Artifacts (Corrected Paths)
+    # 8. Upload Artifacts (Corrected Paths)
     # --------------------------
     - name: Archive trained models + graphs
       uses: actions/upload-artifact@v4
