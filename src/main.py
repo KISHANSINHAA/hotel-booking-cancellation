@@ -8,18 +8,19 @@ warnings.filterwarnings('ignore')
 # Add src directory to Python path
 sys.path.append(os.path.join(os.path.dirname(__file__)))
 
-# Import modules
-from data.data_loader import load_data, load_and_inspect_data
-from preprocessing.eda import perform_eda, visualize_distributions
-from preprocessing.data_cleaning import clean_data
-from preprocessing.feature_engineering import engineer_features
-from preprocessing.outlier_detection import handle_outliers
-from preprocessing.encoding import handle_categorical_encoding
-from models.class_imbalance import handle_class_imbalance
-from models.model_training import train_and_compare_models, split_data, get_all_trained_models
-from models.hyperparameter_tuning import quick_hyperparameter_tuning  # Use quick tuning
-from models.model_evaluation import comprehensive_model_evaluation
-from utils.model_saving import save_complete_model_package
+# ========== MODULE IMPORTS ==========
+from src.data.data_loader import load_data, load_and_inspect_data
+from src.preprocessing.eda import perform_eda, visualize_distributions
+from src.preprocessing.data_cleaning import clean_data
+from src.preprocessing.feature_engineering import engineer_features
+from src.preprocessing.outlier_detection import handle_outliers
+from src.preprocessing.encoding import handle_categorical_encoding
+from src.models.class_imbalance import handle_class_imbalance
+from src.models.model_training import train_and_compare_models, split_data, get_all_trained_models
+from src.models.hyperparameter_tuning import quick_hyperparameter_tuning
+from src.models.model_evaluation import comprehensive_model_evaluation
+from src.utils.model_saving import save_complete_model_package
+# =====================================================
 
 def check_existing_models():
     """Check if models already exist"""
@@ -38,6 +39,8 @@ def check_existing_models():
             return False
             
     return True
+
+
 
 def main():
     """
