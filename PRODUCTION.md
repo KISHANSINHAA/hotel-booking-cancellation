@@ -11,8 +11,8 @@ import joblib
 import pandas as pd
 import os
 
-# Load the trained model
-model_path = os.path.join("models", "final_model", "random_forest_model.joblib")
+# Load the trained model (best performing model is Gradient Boosting)
+model_path = os.path.join("models", "final_model", "gradient_boosting_model.joblib")
 model = joblib.load(model_path)
 
 # Load encoders (if needed for categorical variables)
@@ -168,8 +168,8 @@ from app import create_features, load_models
 # Load models
 models, encoders, training_features = load_models()
 
-# Select model (e.g., Random Forest)
-selected_model = models['Random Forest']
+# Select model (e.g., Gradient Boosting - best performing model)
+selected_model = models['Gradient Boosting']
 
 # Create features
 features = create_features(
@@ -217,7 +217,7 @@ Set these environment variables for production deployment:
 
 ```bash
 # Model paths
-MODEL_PATH=models/final_model/random_forest_model.joblib
+MODEL_PATH=models/final_model/gradient_boosting_model.joblib
 ENCODERS_PATH=models/final_model/encoders.joblib
 METADATA_PATH=models/final_model/model_metadata.json
 
