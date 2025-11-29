@@ -34,6 +34,7 @@ jobs:
     
     - name: Retrain model
       run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd)/src
         cd src
         python main.py
     
