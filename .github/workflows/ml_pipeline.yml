@@ -40,27 +40,44 @@ jobs:
         python -m pip install pytest
 
     # --------------------------
-    # 4. Set Correct PYTHONPATH
+    # 4. Debug Directory Structure
+    # --------------------------
+    - name: Debug directory structure
+      run: |
+        echo "===== CURRENT WORKING DIRECTORY ====="
+        pwd
+        echo "===== ROOT STRUCTURE ====="
+        ls -la
+        echo "===== SRC STRUCTURE ====="
+        ls -la src/
+        echo "===== SRC SUBDIRECTORIES ====="
+        ls -la src/data/ || echo "No data directory"
+        ls -la src/models/ || echo "No models directory"
+        ls -la src/preprocessing/ || echo "No preprocessing directory"
+        ls -la src/utils/ || echo "No utils directory"
+
+    # --------------------------
+    # 5. Set Correct PYTHONPATH
     # --------------------------
     - name: Add project root to PYTHONPATH
       run: |
         echo "PYTHONPATH=/home/runner/work/hotel-booking-cancellation/hotel-booking-cancellation" >> $GITHUB_ENV
-        echo "PYTHONPATH=/home/runner/work/hotel-booking-cancellation/hotel-booking-cancellation/src" >> $GITHUB_ENV
+        echo "PYTHONPATH=/home/runner/work/hotel-booking-cancellation/hotel-booking-cancellation/src:$PYTHONPATH" >> $GITHUB_ENV
 
     # --------------------------
-    # 5. Debug Directory Structure
+    # 6. Debug PYTHONPATH
     # --------------------------
-    - name: Debug directory structure
+    - name: Debug PYTHONPATH
       run: |
-        echo "===== ROOT STRUCTURE ====="
-        ls -R .
-        echo "===== SRC STRUCTURE ====="
-        ls -R src || true
         echo "===== PYTHONPATH ====="
         echo $PYTHONPATH
+        echo "===== TESTING IMPORTS ====="
+        cd src
+        python -c "import sys; print('Python path:'); [print(p) for p in sys.path]"
+        python -c "import models; print('Models module imported successfully')" || echo "Failed to import models module"
 
     # --------------------------
-    # 6. Run Tests
+    # 7. Run Tests
     # --------------------------
     - name: Run tests
       run: |
@@ -68,7 +85,7 @@ jobs:
         python -m pytest tests/ -v || echo "No tests found or tests failed"
 
     # --------------------------
-    # 7. Run Main ML Pipeline
+    # 8. Run Main ML Pipeline
     # --------------------------
     - name: Retrain model
       run: |
@@ -76,14 +93,14 @@ jobs:
         python main.py
 
     # --------------------------
-    # 8. Deployment Placeholder (Optional)
+    # 9. Deployment Placeholder (Optional)
     # --------------------------
     - name: Deploy to Streamlit (if on master)
       if: github.ref == 'refs/heads/master'
       run: echo "Model retrained successfully. Ready for deployment."
 
     # --------------------------
-    # 9. Upload Artifacts (Corrected Paths)
+    # 10. Upload Artifacts (Corrected Paths)
     # --------------------------
     - name: Archive trained models + graphs
       uses: actions/upload-artifact@v4
