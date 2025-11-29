@@ -5,29 +5,49 @@ import sys
 import warnings
 warnings.filterwarnings('ignore')
 
-# Add src directory to Python path
+# Dynamically add the src directory and its subdirectories to the Python path
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
-sys.path.insert(0, current_dir)
-sys.path.insert(0, parent_dir)
+
+# Add directories to sys.path if not already present
+directories_to_add = [current_dir, parent_dir]
+
+for directory in directories_to_add:
+    if directory not in sys.path:
+        sys.path.insert(0, directory)
 
 # ========== MODULE IMPORTS ==========
-# Use relative imports with explicit paths
-data_loader_path = os.path.join(current_dir, 'data', 'data_loader.py')
-if os.path.exists(data_loader_path):
-    from data.data_loader import load_data, load_and_inspect_data
+# Import modules with error handling
+modules_to_import = [
+    ('data.data_loader', 'load_data, load_and_inspect_data'),
+    ('preprocessing.eda', 'perform_eda, visualize_distributions'),
+    ('preprocessing.data_cleaning', 'clean_data'),
+    ('preprocessing.feature_engineering', 'engineer_features'),
+    ('preprocessing.outlier_detection', 'handle_outliers'),
+    ('preprocessing.encoding', 'handle_categorical_encoding'),
+    ('models.class_imbalance', 'handle_class_imbalance'),
+    ('models.model_training', 'train_and_compare_models, split_data, get_all_trained_models'),
+    ('models.hyperparameter_tuning', 'quick_hyperparameter_tuning'),
+    ('models.model_evaluation', 'comprehensive_model_evaluation'),
+    ('utils.model_saving', 'save_complete_model_package')
+]
 
-from preprocessing.eda import perform_eda, visualize_distributions
-from preprocessing.data_cleaning import clean_data
-from preprocessing.feature_engineering import engineer_features
-from preprocessing.outlier_detection import handle_outliers
-from preprocessing.encoding import handle_categorical_encoding
-from models.class_imbalance import handle_class_imbalance
-from models.model_training import train_and_compare_models, split_data, get_all_trained_models
-from models.hyperparameter_tuning import quick_hyperparameter_tuning
-from models.model_evaluation import comprehensive_model_evaluation
-from utils.model_saving import save_complete_model_package
-# =====================================================
+# Import all modules
+imported_modules = {}
+for module_name, imports in modules_to_import:
+    try:
+        if ',' in imports:
+            # Multiple imports from same module
+            import_statement = f"from {module_name} import {imports}"
+            exec(import_statement)
+        else:
+            # Single import
+            import_statement = f"from {module_name} import {imports}"
+            exec(import_statement)
+        print(f"✓ Successfully imported {module_name}")
+    except Exception as e:
+        print(f"✗ Failed to import {module_name}: {e}")
+        raise
 
 def check_existing_models():
     """Check if models already exist"""
