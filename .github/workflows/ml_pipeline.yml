@@ -43,7 +43,7 @@ jobs:
         echo "Model retrained successfully. Ready for deployment."
     
     - name: Archive model artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: trained-models
         path: |
