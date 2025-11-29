@@ -5,10 +5,15 @@ import sys
 import warnings
 warnings.filterwarnings('ignore')
 
-# Add src directory to Python path
-sys.path.append(os.path.join(os.path.dirname(__file__)))
-
 # ========== MODULE IMPORTS ==========
+# Handle imports when running from src directory
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+
+# Add parent directory to path if not already there
+if parent_dir not in sys.path:
+    sys.path.insert(0, parent_dir)
+
 from data.data_loader import load_data, load_and_inspect_data
 from preprocessing.eda import perform_eda, visualize_distributions
 from preprocessing.data_cleaning import clean_data
