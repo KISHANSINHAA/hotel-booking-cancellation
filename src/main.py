@@ -6,83 +6,27 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # Add src directory to Python path
-sys.path.append(os.path.join(os.path.dirname(__file__)))
-
-# Debug information
-print("===== DEBUG INFORMATION =====")
-print(f"Current working directory: {os.getcwd()}")
-print(f"__file__ path: {__file__}")
-print(f"sys.path: {sys.path}")
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.insert(0, current_dir)
+sys.path.insert(0, parent_dir)
 
 # ========== MODULE IMPORTS ==========
-print("Attempting to import modules...")
-
-try:
+# Use relative imports with explicit paths
+data_loader_path = os.path.join(current_dir, 'data', 'data_loader.py')
+if os.path.exists(data_loader_path):
     from data.data_loader import load_data, load_and_inspect_data
-    print("✓ Imported data.data_loader")
-except Exception as e:
-    print(f"✗ Failed to import data.data_loader: {e}")
 
-try:
-    from preprocessing.eda import perform_eda, visualize_distributions
-    print("✓ Imported preprocessing.eda")
-except Exception as e:
-    print(f"✗ Failed to import preprocessing.eda: {e}")
-
-try:
-    from preprocessing.data_cleaning import clean_data
-    print("✓ Imported preprocessing.data_cleaning")
-except Exception as e:
-    print(f"✗ Failed to import preprocessing.data_cleaning: {e}")
-
-try:
-    from preprocessing.feature_engineering import engineer_features
-    print("✓ Imported preprocessing.feature_engineering")
-except Exception as e:
-    print(f"✗ Failed to import preprocessing.feature_engineering: {e}")
-
-try:
-    from preprocessing.outlier_detection import handle_outliers
-    print("✓ Imported preprocessing.outlier_detection")
-except Exception as e:
-    print(f"✗ Failed to import preprocessing.outlier_detection: {e}")
-
-try:
-    from preprocessing.encoding import handle_categorical_encoding
-    print("✓ Imported preprocessing.encoding")
-except Exception as e:
-    print(f"✗ Failed to import preprocessing.encoding: {e}")
-
-try:
-    from models.class_imbalance import handle_class_imbalance
-    print("✓ Imported models.class_imbalance")
-except Exception as e:
-    print(f"✗ Failed to import models.class_imbalance: {e}")
-
-try:
-    from models.model_training import train_and_compare_models, split_data, get_all_trained_models
-    print("✓ Imported models.model_training")
-except Exception as e:
-    print(f"✗ Failed to import models.model_training: {e}")
-
-try:
-    from models.hyperparameter_tuning import quick_hyperparameter_tuning
-    print("✓ Imported models.hyperparameter_tuning")
-except Exception as e:
-    print(f"✗ Failed to import models.hyperparameter_tuning: {e}")
-
-try:
-    from models.model_evaluation import comprehensive_model_evaluation
-    print("✓ Imported models.model_evaluation")
-except Exception as e:
-    print(f"✗ Failed to import models.model_evaluation: {e}")
-
-try:
-    from utils.model_saving import save_complete_model_package
-    print("✓ Imported utils.model_saving")
-except Exception as e:
-    print(f"✗ Failed to import utils.model_saving: {e}")
-
+from preprocessing.eda import perform_eda, visualize_distributions
+from preprocessing.data_cleaning import clean_data
+from preprocessing.feature_engineering import engineer_features
+from preprocessing.outlier_detection import handle_outliers
+from preprocessing.encoding import handle_categorical_encoding
+from models.class_imbalance import handle_class_imbalance
+from models.model_training import train_and_compare_models, split_data, get_all_trained_models
+from models.hyperparameter_tuning import quick_hyperparameter_tuning
+from models.model_evaluation import comprehensive_model_evaluation
+from utils.model_saving import save_complete_model_package
 # =====================================================
 
 def check_existing_models():
